@@ -2,6 +2,7 @@ package com.mall.product.pms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mall.common.core.util.PageUtils;
+import com.mall.common.core.util.R;
 import com.mall.product.pms.entity.PmsCategoryEntity;
 
 import java.util.List;
@@ -16,13 +17,26 @@ import java.util.Map;
  */
 public interface PmsCategoryService extends IService<PmsCategoryEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    default PageUtils queryPage(Map<String, Object> params){
+        return null;
+    };
 
     /**
      * 获取分类的树结构
      *
      * @return
      */
-    List<PmsCategoryEntity> getCategoryTree();
+    default List<PmsCategoryEntity> getCategoryTree(){
+        return null;
+    };
+
+    /**
+     *
+     * @param catId
+     * @return
+     */
+    R getById(Long catId);
+
+
 }
 

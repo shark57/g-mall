@@ -36,7 +36,37 @@ spring:
     nacos:
       discovery:
         server-addr: 82.157.62.146:8848
-
+    sentinel:
+      transport:
+#        clientIp: 82.157.62.146
+        dashboard: 127.0.0.1:8868
+        port: 8719
+      scg:
+        fallback:
+          mode: response
+          response-body: '{"code":403,"msg":"请求过于频繁，请稍后再试"}'
+      datasource:
+        degrade:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-degrade-rule
+            groupId: SENTINEL_GROUP
+            rule-type: DEGRADE
+            namespace: gmall-sentinel-config
+        flow:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            rule-type: FLOW
+            namespace: gmall-sentinel-config
+        param_flow:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-param-rules
+            groupId: SENTINEL_GROUP
+            rule-type: param_flow
+            namespace: gmall-sentinel-config
 ##多数据源的配置
 #dynamic:
 #  datasource:

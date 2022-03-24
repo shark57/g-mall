@@ -6,7 +6,6 @@ spring:
     active: dev
 server:
   port: 10010
-
 #mybatis
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

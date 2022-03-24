@@ -1,9 +1,14 @@
 package com.mall.product.pms.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.nacos.common.utils.ExceptionUtil;
 import com.mall.common.core.constant.PmsCategoryConstant;
 import com.mall.common.core.util.PageUtils;
 import com.mall.common.core.util.Query;
+import com.mall.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +22,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mall.product.pms.dao.PmsCategoryDao;
 import com.mall.product.pms.entity.PmsCategoryEntity;
 import com.mall.product.pms.service.PmsCategoryService;
-
 
 
 @Service("pmsCategoryService")
@@ -39,6 +43,22 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
     public List<PmsCategoryEntity> getCategoryTree() {
         List<PmsCategoryEntity> records = pmsCategoryDao.selectList(null);
         return constructTree(records);
+    }
+
+    /**
+     * 覆盖，为了热点参数限流
+     * <p>
+     * 若不配置 blockHandler、fallback 等函数，则被流控降级时方法会直接抛出对应的 BlockException；
+     * 若方法未定义 throws BlockException 则会被 JVM 包装一层 UndeclaredThrowableException。
+     *
+     * @param catId
+     * @return
+     */
+    @Override
+    @SentinelResource(value = "getById",
+            blockHandler = "selectUserByNameBlockHandler", fallback = "selectUserByNameFallback")
+    public R getById(Long catId) {
+        return R.ok().put("pmsCategory", super.getById(catId));
     }
 
     /**
@@ -91,4 +111,16 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
         return rootNodes;
     }
 
+    // 服务流量控制处理，参数最后多一个 BlockException，其余与原函数一致。
+
+    public R selectUserByNameBlockHandler(Long catId, BlockException ex) {
+        System.out.println("selectUserByNameBlockHandler异常信息：" + ex.getMessage());
+        return R.error(9998, "selectUserByNameBlockHandler异常信息" + ex.getMessage());
+    }
+
+    // 服务熔断降级处理，函数签名与原函数一致或加一个 Throwable 类型的参数
+    public R selectUserByNameFallback(Long catId, Throwable throwable) {
+        System.out.println("selectUserByNameFallback异常信息：" + throwable.getMessage());
+        return R.error(9999, "selectUserByNameFallback异常信息" + throwable.getMessage());
+    }
 }

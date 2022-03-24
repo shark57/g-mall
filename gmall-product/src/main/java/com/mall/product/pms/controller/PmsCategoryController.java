@@ -4,9 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.mall.common.core.util.PageUtils;
 import com.mall.common.core.util.R;
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +33,7 @@ import com.mall.product.pms.service.PmsCategoryService;
  */
 @RestController
 @RequestMapping("product/pms/category")
+@Slf4j
 public class PmsCategoryController {
     @Autowired
     private PmsCategoryService pmsCategoryService;
@@ -37,12 +44,14 @@ public class PmsCategoryController {
     @RequestMapping("/list")
 //    @RequiresPermissions("pms:pmscategory:list")
     public R list(@RequestParam Map<String, Object> params) {
+        log.info("product/pms/category/list");
         PageUtils page = pmsCategoryService.queryPage(params);
         return R.ok().put("page", page);
     }
 
     @RequestMapping("tree")
     public R getCategoryTree() {
+        log.info("product/pms/category/tree");
         List<PmsCategoryEntity> categoryTree = pmsCategoryService.getCategoryTree();
         return R.ok(categoryTree);
     }
@@ -53,10 +62,21 @@ public class PmsCategoryController {
      */
     @RequestMapping("/info/{catId}")
 //    @RequiresPermissions("pms:pmscategory:info")
-    public R info(@PathVariable("catId") Long catId) {
-        PmsCategoryEntity pmsCategory = pmsCategoryService.getById(catId);
+    public R infoPath(@PathVariable("catId") Long catId) {
 
-        return R.ok().put("pmsCategory", pmsCategory);
+        return pmsCategoryService.getById(catId);
+
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info")
+
+//    @RequiresPermissions("pms:pmscategory:info")
+    public R info(@RequestParam("catId") Long catId) {
+        return pmsCategoryService.getById(catId);
     }
 
     /**

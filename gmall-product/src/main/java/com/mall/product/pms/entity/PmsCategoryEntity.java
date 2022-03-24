@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -63,6 +64,7 @@ public class PmsCategoryEntity implements Serializable {
      * 子节点，不映射到数据库
      */
     @TableField(exist = false)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PmsCategoryEntity> children;
 
 }

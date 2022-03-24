@@ -1,11 +1,11 @@
 package com.mall.gateway.config;
 
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
 /**
  * @author wqi
  * @date 2021/12/14

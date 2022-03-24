@@ -1,3 +1,62 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        #指定和控制台通信的IP，若不配置，会自动选择一个IP注册
+#        clientIp: 82.157.62.146
+        #指定sentinel dashboard web 地址
+        dashboard: 127.0.0.1:8868
+        #指定sentinel组件与sentinel dashboard组件通信地址8719
+#        port: 8719
+      datasource:
+        gw-api:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-gw-api  # 都是在 sentinel源码持久化改造中的规则名称
+            groupId: SENTINEL_GROUP
+            rule-type: GW_API_GROUP
+            namespace: gmall-sentinel-config
+        gw-flow:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-gw-flow
+            groupId: SENTINEL_GROUP
+            rule-type: GW_FLOW
+            namespace: gmall-sentinel-config
+        degrade:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-degrade-rule
+            groupId: SENTINEL_GROUP
+            rule-type: DEGRADE
+            namespace: gmall-sentinel-config
+    nacos:
+      discovery:
+        server-addr: 82.157.62.146:8848
+    #网关路由转发至对应服务，一定注意配置文件的缩进，缩进不规范会导致项目启动受阻，无法成功启动
+    gateway:
+      routes:
+        #自定义路由id，保持全局唯一
+        - id: product
+          #目标服务地址
+          uri: lb://gmall-product
+          #路由条件根据匹配的结果决定是否执行该路由
+          predicates:
+            - Path=/api/product/**
+          #过滤规则，重写url
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+            - name: CustomPost
+#              args:
+#                name: wqi
+        - id: renrenfast
+          uri: lb://gmall-renrenfast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
+
+
 #spring:
 #  datasource:
 #    type: com.alibaba.druid.pool.DruidDataSource
@@ -47,24 +106,3 @@
 #      url: jdbc:postgresql://localhost:5432/renren_security
 #      username: renren
 #      password: 123456
-
-spring:
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 82.157.62.146:8848
-    #网关路由转发至对应服务，一定注意配置文件的缩进，缩进有误项目启动受阻，无法成功启动
-    gateway:
-      routes:
-        - id: product
-          uri: lb://gmall-product
-          predicates:
-            - Path=/api/product/**
-          filters:
-            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
-        - id: renrenfast
-          uri: lb://gmall-renrenfast
-          predicates:
-            - Path=/api/**
-          filters:
-            - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
