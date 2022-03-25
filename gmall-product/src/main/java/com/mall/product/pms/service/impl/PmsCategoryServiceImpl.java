@@ -2,13 +2,11 @@ package com.mall.product.pms.service.impl;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.alibaba.nacos.common.utils.ExceptionUtil;
 import com.mall.common.core.constant.PmsCategoryConstant;
 import com.mall.common.core.util.PageUtils;
 import com.mall.common.core.util.Query;
 import com.mall.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

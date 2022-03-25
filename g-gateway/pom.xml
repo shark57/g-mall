@@ -3,10 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.9.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <artifactId>g-mall</artifactId>
+        <groupId>com.mall</groupId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,6 +18,8 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
     </properties>
 
     <dependencies>
@@ -26,12 +27,10 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
-            <version>2.1.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>2.1.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,31 +39,23 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
         </dependency>
         <!--增加sentinel功能-->
-
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-            <version>2.1.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
-            <version>2.1.0.RELEASE</version>
         </dependency>
-        <!-- sentilen用 nacos 做 持久化-->
+        <!-- sentilen用nacos 做 持久化-->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
             <version>1.8.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--        <groupId>com.alibaba.csp</groupId>-->
-<!--        <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>-->
-<!--            <version>1.8.0</version>-->
-<!--        </dependency>-->
 
     </dependencies>
+
 </project>
