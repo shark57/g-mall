@@ -9,11 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <artifactId>g-common</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>common-core</module>
+        <module>common-entity</module>
     </modules>
 
     <properties>
@@ -34,4 +35,14 @@
             <version>1.18.20</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.mall</groupId>
+                <artifactId>g-common</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

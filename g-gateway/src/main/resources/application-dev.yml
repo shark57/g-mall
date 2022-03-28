@@ -49,14 +49,24 @@ spring:
             - name: CustomPost
 #              args:
 #                name: wqi
+        - id: order
+          uri: lb://gmall-order
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
+        - id: ware
+          uri: lb://gmall-ware
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
         - id: renrenfast
           uri: lb://gmall-renrenfast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
-
-
 #spring:
 #  datasource:
 #    type: com.alibaba.druid.pool.DruidDataSource

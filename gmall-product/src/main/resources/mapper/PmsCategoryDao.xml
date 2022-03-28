@@ -4,7 +4,7 @@
 <mapper namespace="com.mall.product.pms.dao.PmsCategoryDao">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.mall.product.pms.entity.PmsCategoryEntity" id="pmsCategoryMap">
+    <resultMap type="com.mall.order.pms.entity.PmsCategoryEntity" id="pmsCategoryMap">
         <result property="catId" column="cat_id"/>
         <result property="name" column="name"/>
         <result property="parentCid" column="parent_cid"/>

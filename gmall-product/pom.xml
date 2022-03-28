@@ -10,7 +10,7 @@
 
     <groupId>com.mall.product</groupId>
     <artifactId>gmall-product</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>gmall-product</name>
     <description>gmall-product</description>
     <properties>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.mall</groupId>
             <artifactId>common-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
