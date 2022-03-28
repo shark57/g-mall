@@ -1,0 +1,92 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/gl_mall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: Shark@123
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      #Oracle需要打开注释
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 82.157.62.146:8848
+    sentinel:
+      transport:
+#        clientIp: 82.157.62.146
+        dashboard: 127.0.0.1:8868
+        port: 8719
+      scg:
+        fallback:
+          mode: response
+          response-body: '{"code":403,"msg":"请求过于频繁，请稍后再试"}'
+      datasource:
+        degrade:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-degrade-rule
+            groupId: SENTINEL_GROUP
+            rule-type: DEGRADE
+            namespace: gmall-sentinel-config
+        flow:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            rule-type: FLOW
+            namespace: gmall-sentinel-config
+        param_flow:
+          nacos:
+            server-addr: 82.157.62.146:8848
+            dataId: ${spring.application.name}-param-rules
+            groupId: SENTINEL_GROUP
+            rule-type: param_flow
+            namespace: gmall-sentinel-config
+  rabbitmq:
+    host: 82.157.62.146
+    listener:
+      concurrency: 10
+      max-concurrency: 20
+      prefetch: 5
+    username: admin
+    password: wq123321
+    port: 5672
+
+##多数据源的配置
+#dynamic:
+#  datasource:
+#    slave1:
+#      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#      url: jdbc:sqlserver://localhost:1433;DatabaseName=renren_security
+#      username: sa
+#      password: 123456
+#    slave2:
+#      driver-class-name: org.postgresql.Driver
+#      url: jdbc:postgresql://localhost:5432/renren_security
+#      username: renren
+#      password: 123456
