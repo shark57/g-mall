@@ -2,7 +2,6 @@ package com.mall.order.mq.provider;
 
 import com.mall.common.entity.order.OmsOrderMsg;
 import com.mall.order.constant.MqConstant;
-import com.mall.order.entity.OmsOrderEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.MessageDeliveryMode;

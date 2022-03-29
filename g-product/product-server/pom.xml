@@ -3,16 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>g-mall</artifactId>
+        <artifactId>g-product</artifactId>
         <groupId>com.mall</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.mall.order</groupId>
-    <artifactId>gmall-order</artifactId>
+    <groupId>com.mall.product</groupId>
+    <artifactId>product-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>gmall-order</name>
-    <description>gmall-order</description>
+    <name>product-server</name>
+    <description>gmall-product-server</description>
+
     <properties>
         <java.version>1.8</java.version>
         <pagehelper.spring.boot.version>1.2.5</pagehelper.spring.boot.version>
@@ -32,6 +33,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--新加依赖-->
+
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -47,10 +50,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
         <!-- mysql驱动 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -62,11 +61,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mall</groupId>
-            <artifactId>common-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -85,18 +79,6 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-transport-simple-http</artifactId>
-        </dependency>
-
-        <!--引入rabbitMQ-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mall</groupId>
-            <artifactId>product-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

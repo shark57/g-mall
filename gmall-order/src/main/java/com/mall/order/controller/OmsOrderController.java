@@ -1,15 +1,20 @@
 package com.mall.order.controller;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
 import com.mall.common.core.util.PageUtils;
 import com.mall.common.core.util.R;
+import com.mall.order.api.PmsProductApi;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.mall.order.entity.OmsOrderEntity;
 import com.mall.order.service.OmsOrderService;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -20,9 +25,21 @@ import com.mall.order.service.OmsOrderService;
  */
 @RestController
 @RequestMapping("order/omsorder")
+@Slf4j
 public class OmsOrderController {
     @Autowired
     private OmsOrderService omsOrderService;
+
+    @Resource
+    PmsProductApi pmsProductApi;
+
+    @GetMapping("/info")
+//    @RequiresPermissions("pms:pmscategory:info")
+    public R infoPath(@RequestParam("catId") Long catId) {
+        log.info("order服务，我在测试sdk，时间:{}", LocalDateTime.now());
+        return pmsProductApi.infoPath(catId);
+
+    }
 
     /**
      * 列表

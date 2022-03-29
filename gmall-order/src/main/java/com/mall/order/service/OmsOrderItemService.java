@@ -2,7 +2,6 @@ package com.mall.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mall.common.core.util.PageUtils;
-import com.mall.common.core.util.R;
 import com.mall.order.entity.OmsOrderItemEntity;
 
 import java.util.Map;

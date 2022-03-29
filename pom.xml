@@ -23,11 +23,11 @@
 
     <modules>
         <module>renren-fast</module>
-        <module>gmall-product</module>
         <module>g-common</module>
         <module>g-gateway</module>
         <module>gmall-order</module>
         <module>gmall-ware</module>
+        <module>g-product</module>
     </modules>
 
     <dependencyManagement>
