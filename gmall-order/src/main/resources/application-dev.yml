@@ -1,9 +1,18 @@
 spring:
+  rabbitmq:
+    host: 82.157.62.146
+    listener:
+      concurrency: 10
+      max-concurrency: 20
+      prefetch: 5
+    username: admin
+    password: wq123321
+    port: 5672
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/gl_mall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://127.0.0.1:3306/gl_mall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
       username: root
       password: Shark@123
       initial-size: 10
@@ -35,7 +44,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 82.157.62.146:8848
+#        server-addr: 82.157.62.146:8848
+        server-addr: 127.0.0.1:8848
     sentinel:
       transport:
 #        clientIp: 82.157.62.146
@@ -67,16 +77,37 @@ spring:
             groupId: SENTINEL_GROUP
             rule-type: param_flow
             namespace: gmall-sentinel-config
-  rabbitmq:
-    host: 82.157.62.146
-    listener:
-      concurrency: 10
-      max-concurrency: 20
-      prefetch: 5
-    username: admin
-    password: wq123321
-    port: 5672
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
+  tx-service-group: ${spring.application.name}-tx-group
+  config:
+    type: nacos
+    # 需要和server在同一个注册中心下
+    nacos:
+      namespace: seata-space
+      serverAddr: 127.0.0.1:8848
+      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
+      group: SEATA_GROUP
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: seata-space
+      username: "nacos"
+      password: "nacos"
 
+
+#开启feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true
 ##多数据源的配置
 #dynamic:
 #  datasource:

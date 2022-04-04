@@ -3,9 +3,7 @@ package com.mall.common.entity.order;
 import lombok.Data;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 用于消息传递的订单信息

@@ -37,6 +37,13 @@ public interface PmsCategoryService extends IService<PmsCategoryEntity> {
      */
     R getById(Long catId);
 
+    /**
+     *
+     * @param pmsCategory
+     * @return
+     */
+    boolean updateById(PmsCategoryEntity pmsCategory);
+
 
 }
 

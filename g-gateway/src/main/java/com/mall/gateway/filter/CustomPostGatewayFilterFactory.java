@@ -1,5 +1,7 @@
 package com.mall.gateway.filter;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -17,18 +19,21 @@ import reactor.core.publisher.Mono;
  * @date 2022/3/19
  */
 @Component
+@Slf4j
 public class CustomPostGatewayFilterFactory extends AbstractGatewayFilterFactory<CustomPostGatewayFilterFactory.Config> {
 
     public CustomPostGatewayFilterFactory() {
         super(Config.class);
     }
-
+    @Value("${server.port:0000}")
+    private String port;
     @Override
     public GatewayFilter apply(Config config) {
         // grab configuration from Config object
         return (exchange, chain) -> {
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 ServerHttpResponse response = exchange.getResponse();
+                log.info("gateway端口：{}", port);
                 //Manipulate the response in some way
             }));
         };

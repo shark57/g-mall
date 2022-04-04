@@ -1,6 +1,5 @@
 package com.mall.ware.controller;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -70,8 +69,7 @@ public class WmsWareSkuController {
     @PostMapping("/lockStock")
     //@RequiresPermissions("ware:wmswaresku:save")
     public R lockStock(@RequestParam("skuId") String skuId) {
-        log.info("扣减库存被调用，skuId：{}", skuId);
-
+        wmsWareSkuService.lockStock(skuId);
         return R.ok("锁定库存成功！");
     }
 

@@ -2,6 +2,7 @@ package com.mall.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mall.common.core.util.PageUtils;
+import com.mall.common.core.util.R;
 import com.mall.ware.entity.WmsWareSkuEntity;
 
 import java.util.Map;
@@ -15,5 +16,13 @@ import java.util.Map;
 public interface WmsWareSkuService extends IService<WmsWareSkuEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 扣减库存业务逻辑
+     *
+     * @param skuId
+     * @return
+     */
+    R lockStock(String skuId);
 }
 

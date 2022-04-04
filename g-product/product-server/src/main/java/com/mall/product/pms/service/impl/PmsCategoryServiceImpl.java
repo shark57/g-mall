@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,9 +22,14 @@ import com.mall.product.pms.dao.PmsCategoryDao;
 import com.mall.product.pms.entity.PmsCategoryEntity;
 import com.mall.product.pms.service.PmsCategoryService;
 
+import javax.annotation.PostConstruct;
+
 
 @Service("pmsCategoryService")
 public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCategoryEntity> implements PmsCategoryService {
+
+
+    ReentrantLock lock = new ReentrantLock();
 
     @Autowired
     PmsCategoryDao pmsCategoryDao;
@@ -57,6 +63,23 @@ public class PmsCategoryServiceImpl extends ServiceImpl<PmsCategoryDao, PmsCateg
             blockHandler = "selectUserByNameBlockHandler", fallback = "selectUserByNameFallback")
     public R getById(Long catId) {
         return R.ok().put("pmsCategory", super.getById(catId));
+    }
+
+    @Override
+    public boolean updateById(PmsCategoryEntity pmsCategory) {
+        PmsCategoryEntity pmsCategoryEntity = null;
+        boolean result = false;
+        lock.lock();
+        try {
+            pmsCategoryEntity = super.getById(pmsCategory.getCatId());
+            pmsCategoryEntity.setProductCount(pmsCategoryEntity.getProductCount() + 1);
+            result = super.updateById(pmsCategoryEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        return result;
     }
 
     /**

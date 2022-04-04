@@ -6,12 +6,14 @@ import com.mall.order.constant.OrderStatusType;
 import com.mall.order.feign.WareFeign;
 import com.mall.order.mq.provider.OrderProvider;
 import com.mall.order.util.IdUtil;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -23,6 +25,7 @@ import com.mall.common.core.util.Query;
 import com.mall.order.dao.OmsOrderDao;
 import com.mall.order.entity.OmsOrderEntity;
 import com.mall.order.service.OmsOrderService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -54,14 +57,17 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
      * @param omsOrder
      * @return
      */
+//    @GlobalTransactional(rollbackFor = Exception.class)
+    @Transactional
     @Override
     public R createOrder(OmsOrderEntity omsOrder) {
         omsOrder.setStatus(OrderStatusType.UN_PAYMENT.getStatus());
-        omsOrder.setCreateTime(LocalDateTime.now());
+//        omsOrder.setCreateTime(LocalDateTime.now());
         omsOrder.setOrderSn(IdUtil.getOrderSn());
 
-        R r = wareFeign.lockStock("1");
-        log.info("扣减库存调用返回：{}", r.toString());
+//        R r = wareFeign.lockStock("1");
+        wareFeign.lockStock("1");
+        log.info("扣减库存已经调用");
         try {
             super.save(omsOrder);
             OmsOrderMsg omsOrderMsg = new OmsOrderMsg();
@@ -69,8 +75,9 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderDao, OmsOrderEntity
             orderProvider.sendUserToMq(omsOrderMsg);
         } catch (Exception e) {
             log.error("订单创建失败，错误信息：{}", e.getMessage());
-            return R.error();
+            throw e;
         }
+        int i = 1/0;
         return R.ok();
     }
 
